@@ -6,7 +6,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
       - name: Install Dependencies
         run: npm install
+        
       - name: Build Project
-        run: npm run build
+        run: npm run build 
+        
+      - name: Notify n8n on Failure
+        if: failure()
+        run: |
+          curl -X POST https://farzeen-tech.app.n8n.cloud/webhook-test/git \
+          -H "Content-Type: application/json" \
+          -d '{
+            "status": "failed",
+            "repository": "${{ github.repository }}",
+            "run_id": "${{ github.run_id }}",
+            "commit_message": "${{ github.event.head_commit.message }}"
+          }'
