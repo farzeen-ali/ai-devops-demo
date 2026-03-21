@@ -24,3 +24,4 @@ jobs:
             "run_id": "${{ github.run_id }}",
             "commit_message": "${{ github.event.head_commit.message }}"
           }'
+
